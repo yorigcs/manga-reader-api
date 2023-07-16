@@ -2,13 +2,22 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.use(helmet());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const result = errors.map(
+          (error) => error.constraints[Object.keys(error.constraints)[0]],
+        );
+        return new BadRequestException(result[0]);
+      },
+    }),
+  );
 
   const configSwagger = new DocumentBuilder()
     .setTitle('Manga Reader')

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -20,9 +20,8 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     const { password, confirmPassword } = createUserDto;
     if (password !== confirmPassword) {
-      throw new HttpException(
+      throw new BadRequestException(
         'The fields password and confirm password must be equals.',
-        HttpStatus.BAD_REQUEST,
       );
     }
     return this.userService.create(createUserDto);
