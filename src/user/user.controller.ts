@@ -1,7 +1,8 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException, ConflictException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserEmailError } from './errors/user.email.error';
 
 @ApiTags('User')
 @Controller('user')
@@ -17,13 +18,16 @@ export class UserController {
     status: 404,
     description: 'Invalid field validation',
   })
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     const { password, confirmPassword } = createUserDto;
     if (password !== confirmPassword) {
-      throw new BadRequestException(
-        'The fields password and confirm password must be equals.',
-      );
+      throw new BadRequestException('The fields password and confirm password must be equals.');
     }
-    return this.userService.create(createUserDto);
+    try {
+      return await this.userService.create(createUserDto);
+    } catch (error) {
+      if (error instanceof UserEmailError) throw new ConflictException(error.message);
+      throw error;
+    }
   }
 }
