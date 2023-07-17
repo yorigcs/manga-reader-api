@@ -12,9 +12,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) => {
-        const result = errors.map(
-          (error) => error.constraints[Object.keys(error.constraints)[0]],
-        );
+        const result = errors.map((error) => error.constraints[Object.keys(error.constraints)[0]]);
         return new BadRequestException(result[0]);
       },
     }),
@@ -23,15 +21,8 @@ async function bootstrap() {
   const configSwagger = new DocumentBuilder()
     .setTitle('Manga Reader')
     .setDescription('API documentation')
-    .setContact(
-      'Linkedin',
-      'https://linkedin.com/in/yoridev',
-      'yorigcsdev@gmail.com',
-    )
-    .setExternalDoc(
-      'Github Repository',
-      'https://github.com/yorigcs/manga-reader-api',
-    )
+    .setContact('Linkedin', 'https://linkedin.com/in/yoridev', 'yorigcsdev@gmail.com')
+    .setExternalDoc('Github Repository', 'https://github.com/yorigcs/manga-reader-api')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, configSwagger);
