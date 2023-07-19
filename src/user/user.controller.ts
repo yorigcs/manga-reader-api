@@ -2,7 +2,7 @@ import { Controller, Post, Body, BadRequestException, ConflictException } from '
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserEmailError } from './errors/user.email.error';
+import { UserEmailError } from './errors/user.errors';
 
 @ApiTags('User')
 @Controller('user')

@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
+import { HashModule } from '../shared/hash/hash.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { userProviders } from './user.providers';
-import { DatabaseModule } from '../database.modules';
-import { HashModule } from '../shared/hash/hash.module';
+import { User } from './entities/user.entity';
 
 @Module({
-  imports: [DatabaseModule, HashModule],
+  imports: [TypeOrmModule.forFeature([User]), HashModule],
+  exports: [TypeOrmModule],
   controllers: [UserController],
-  providers: [...userProviders, UserService],
+  providers: [UserService],
 })
 export class UserModule {}

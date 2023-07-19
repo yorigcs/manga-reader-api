@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export enum UserRole {
+enum UserRole {
   ADMIN = 'admin',
   USER = 'user',
 }
@@ -12,7 +12,7 @@ export class User {
   @Column({ length: 40 })
   username: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()

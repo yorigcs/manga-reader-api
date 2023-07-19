@@ -1,19 +1,20 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { UserEmailError } from './errors/user.email.error';
+import { UserEmailError } from './errors/user.errors';
 import { HashService } from '../shared/hash/hash.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(@Inject('USER_REPOSITORY') private readonly userRepository: Repository<User>, private readonly hashService: HashService) {}
+  constructor(@InjectRepository(User) private readonly userRepo: Repository<User>, private readonly hashService: HashService) {}
   async create(createUserDto: CreateUserDto) {
     const { email, password, username } = createUserDto;
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this.userRepo.findOneBy({ email });
     if (user !== null) throw new UserEmailError();
     const hashedPassword = await this.hashService.hash(password);
-    await this.userRepository.save({ email, password: hashedPassword, username });
+    await this.userRepo.save({ username, email, password: hashedPassword });
     return 'User created!';
   }
 }
