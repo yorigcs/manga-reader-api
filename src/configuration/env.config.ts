@@ -8,6 +8,6 @@ export default () => ({
     database: process.env.DATABASE_NAME,
   },
   jwt: {
-    secret: process.env.JWT_SECRET,
+    accessTokenSecret: process.env.JWT_ACCESS_TOKEN_SECRET,
   },
 });
