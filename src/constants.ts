@@ -1,0 +1,3 @@
+export const JWT_PROVIDES = {
+  ACCESS_TOKEN: 'ACCESS_TOKEN',
+};
