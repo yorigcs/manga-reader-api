@@ -15,7 +15,7 @@ export class UserService {
     const { email, password, username } = createUserDto;
     const user = await this.userRepo.findOneBy({ email });
     if (user !== null) throw new ConflictException('This e-mail is already associated with an account.');
-    const hashedPassword = await this.hashService.hash(password);
+    const hashedPassword = await this.hashService.hash({ plainText: password });
     const userSaved = await this.userRepo.save({ username, email, password: hashedPassword });
     return {
       id: userSaved.id,
