@@ -5,13 +5,13 @@ import { TokenGenerator, TokenValidator } from '../../contracts/cryptography/tok
 @Injectable()
 export class JwtService implements TokenGenerator, TokenValidator {
   constructor(private readonly tokenSecret: string) {}
-  async generate({ key, expirationInMs }: TokenGenerator.Input): Promise<TokenGenerator.Output> {
+  async generate<T = string>({ key, expirationInMs }: TokenGenerator.Input<T>): Promise<TokenGenerator.Output> {
     const expirationInSeconds = expirationInMs / 1000;
     return sign({ key }, this.tokenSecret, { expiresIn: expirationInSeconds });
   }
 
-  async validate({ token }: TokenValidator.Input): Promise<TokenValidator.Output> {
-    const payload = verify(token, this.tokenSecret) as JwtPayload;
+  async validate<T = string>({ token }: TokenValidator.Input): Promise<TokenValidator.Output<T>> {
+    const payload = verify(token, this.tokenSecret) as T as JwtPayload;
     return payload.key;
   }
 }

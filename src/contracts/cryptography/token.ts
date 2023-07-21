@@ -3,8 +3,8 @@ export interface TokenGenerator {
 }
 
 export namespace TokenGenerator {
-  export type Input = {
-    key: string;
+  export type Input<T = string> = {
+    key: T;
     expirationInMs: number;
   };
   export type Output = string;
@@ -16,5 +16,5 @@ export interface TokenValidator {
 
 export namespace TokenValidator {
   export type Input = { token: string };
-  export type Output = string;
+  export type Output<T = string> = T;
 }

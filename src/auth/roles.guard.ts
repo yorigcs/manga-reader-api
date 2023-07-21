@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Inject, Type, mixin } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { User } from '../user/entities/user.entity';
+import { UserPayload } from './auth.service';
 
 export type Roles = 'user' | 'admin';
 export const RolesGuard = (role: Roles): Type<CanActivate> => {
@@ -9,10 +10,10 @@ export const RolesGuard = (role: Roles): Type<CanActivate> => {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
-      const userId = request?.userId;
-      if (userId === undefined || userId === null) return false;
-      const user = await this.dataSource.getRepository(User).findOneBy({ id: userId });
-      return !(user.role !== 'admin' && role === 'admin');
+      const user = request?.user as UserPayload;
+      if (user === undefined || user === null) return false;
+      const userSearch = await this.dataSource.getRepository(User).findOneBy({ id: user.id });
+      return !(userSearch.role !== 'admin' && role === 'admin');
     }
   }
   return mixin(ScopeGuardMixin);

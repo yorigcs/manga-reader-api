@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedExceptio
 import { Request } from 'express';
 import { JwtService } from '../shared/jwt/jwt.service';
 import { JWT_PROVIDES } from '../constants';
+import { UserPayload } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -11,7 +12,7 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
     if (!token) throw new UnauthorizedException();
     try {
-      request['userId'] = await this.jwtService.validate({ token });
+      request['user'] = await this.jwtService.validate<UserPayload>({ token });
     } catch {
       throw new UnauthorizedException();
     }
