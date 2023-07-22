@@ -1,22 +1,22 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import helmet from 'helmet';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { BadRequestException, ValidationPipe } from '@nestjs/common';
-import config from './configuration/env.config';
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
+import helmet from 'helmet'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { BadRequestException, ValidationPipe } from '@nestjs/common'
+import config from './configuration/env.config'
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
-  app.use(helmet());
+async function bootstrap () {
+  const app = await NestFactory.create(AppModule)
+  app.enableCors()
+  app.use(helmet())
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors) => {
-        const result = errors.map((error) => error.constraints[Object.keys(error.constraints)[0]]);
-        return new BadRequestException(result[0]);
-      },
-    }),
-  );
+        const result = errors.map((error) => error.constraints?.[Object.keys(error?.constraints)[0]])
+        return new BadRequestException(result[0])
+      }
+    })
+  )
 
   const configSwagger = new DocumentBuilder()
     .setTitle('Manga Reader')
@@ -25,9 +25,9 @@ async function bootstrap() {
     .setExternalDoc('Github Repository', 'https://github.com/yorigcs/manga-reader-api')
     .setVersion('1.0')
     .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, configSwagger);
-  SwaggerModule.setup('api/docs', app, document);
-  await app.listen(config().port);
+    .build()
+  const document = SwaggerModule.createDocument(app, configSwagger)
+  SwaggerModule.setup('api/docs', app, document)
+  await app.listen(config().port)
 }
-void bootstrap();
+void bootstrap()

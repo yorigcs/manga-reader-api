@@ -1,15 +1,19 @@
-import { IsIn, IsNotEmpty } from 'class-validator';
-import { UserPayload } from '../../auth/auth.service';
-import { BookType } from '../entities/book.entity';
+import { IsIn, IsNotEmpty } from 'class-validator'
+import { type UserPayload } from '../../auth/auth.service'
+import { BookType } from '../entities/book.entity'
 export class CreateBookDto {
   @IsNotEmpty()
-  title: string;
+    title: string
+
   @IsNotEmpty()
-  synopsis: string;
+    synopsis: string
+
   @IsNotEmpty()
-  author: string;
+    author: string
+
   @IsIn(['manga', 'manhua', 'manhwa'])
-  type: BookType;
-  file: Express.Multer.File;
-  user: UserPayload;
+    type: BookType
+
+  file: Express.Multer.File
+  user: UserPayload
 }

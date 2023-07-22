@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger'
 
 export class GetAllTagsResponse {
   @ApiProperty()
-  id: number;
+    id: number
+
   @ApiProperty()
-  name: string;
+    name: string
 }

@@ -1,16 +1,16 @@
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { TagsService } from './tags.service';
-import { CreateTagDto } from './dto/create-tag.dto';
-import { RolesGuard } from '../auth/roles.guard';
-import { AuthGuard } from '../auth/auth.guard';
-import { UserRole } from '../user/entities/user.entity';
-import { GetAllTagsResponse } from './swagger/tags.model';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common'
+import { ApiBearerAuth, ApiConflictResponse, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
+import { TagsService } from './tags.service'
+import { CreateTagDto } from './dto/create-tag.dto'
+import { RolesGuard } from '../auth/roles.guard'
+import { AuthGuard } from '../auth/auth.guard'
+import { UserRole } from '../user/entities/user.entity'
+import { GetAllTagsResponse } from './swagger/tags.model'
 
 @ApiTags('Tags')
 @Controller('tags')
 export class TagsController {
-  constructor(private readonly tagsService: TagsService) {}
+  constructor (private readonly tagsService: TagsService) {}
 
   @UseGuards(AuthGuard, RolesGuard(UserRole.ADMIN))
   @Post()
@@ -19,13 +19,13 @@ export class TagsController {
   @ApiForbiddenResponse({ description: "User doesn't have permission" })
   @ApiCreatedResponse({ description: 'Tag created!' })
   @ApiConflictResponse({ description: 'This tag already exists' })
-  create(@Body() createTagDto: CreateTagDto) {
-    return this.tagsService.create(createTagDto);
+  async create (@Body() createTagDto: CreateTagDto) {
+    return await this.tagsService.create(createTagDto)
   }
 
   @Get()
   @ApiOkResponse({ description: 'List of all tags available.', type: GetAllTagsResponse, isArray: true })
-  findAll() {
-    return this.tagsService.findAll();
+  async findAll () {
+    return await this.tagsService.findAll()
   }
 }

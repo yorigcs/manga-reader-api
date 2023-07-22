@@ -1,15 +1,19 @@
-import { BookType } from '../entities/book.entity';
-import { ApiProperty } from '@nestjs/swagger';
+import { BookType } from '../entities/book.entity'
+import { ApiProperty } from '@nestjs/swagger'
 
 export class CreateBookModel {
   @ApiProperty()
-  title: string;
+    title: string
+
   @ApiProperty()
-  synopsis: string;
+    synopsis: string
+
   @ApiProperty()
-  author: string;
+    author: string
+
   @ApiProperty({ enum: [BookType.MANHUA, BookType.MANGA, BookType.MANHWA] })
-  type: BookType;
+    type: BookType
+
   @ApiProperty({ type: 'string', format: 'binary' })
-  file: any;
+    file: any
 }

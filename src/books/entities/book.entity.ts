@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 export enum BookType {
   MANGA = 'manga',
@@ -15,23 +15,32 @@ export enum BookStatus {
 @Entity()
 export class Book {
   @PrimaryGeneratedColumn()
-  id: number;
+    id: number
+
   @Column({ unique: true })
-  title: string;
+    title: string
+
   @Column()
-  synopsis: string;
+    synopsis: string
+
   @Column()
-  author: string;
+    author: string
+
   @Column()
-  image: string;
+    image: string
+
   @Column({ type: 'enum', enum: BookType })
-  type: BookType;
+    type: BookType
+
   @Column({ type: 'enum', enum: BookStatus, default: BookStatus.ONGOING })
-  status: BookStatus;
+    status: BookStatus
+
   @Column()
-  postedBy: string;
+    postedBy: string
+
   @CreateDateColumn()
-  postedOn: Date;
+    postedOn: Date
+
   @UpdateDateColumn()
-  updatedOn: Date;
+    updatedOn: Date
 }
