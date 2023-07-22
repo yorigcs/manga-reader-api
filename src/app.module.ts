@@ -15,7 +15,7 @@ import { BooksModule } from './books/books.module'
     TypeOrmModule.forRoot({
       type: 'postgres',
       ...config().database,
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      autoLoadEntities: true,
       synchronize: true
     }),
     UserModule,

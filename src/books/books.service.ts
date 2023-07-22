@@ -1,10 +1,10 @@
 import { ConflictException, Inject, Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 import { type CreateBookDto } from './dto/create-book.dto'
 import { AWS_PROVIDES } from '../constants'
 import { AwsS3FileStorageService } from '../shared/storage/aws-s3-file-storage.service'
-import { InjectRepository } from '@nestjs/typeorm'
 import { Book } from './entities/book.entity'
-import { Repository } from 'typeorm'
 
 @Injectable()
 export class BooksService {
