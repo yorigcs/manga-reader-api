@@ -24,6 +24,7 @@ async function bootstrap() {
     .setContact('Linkedin', 'https://linkedin.com/in/yoridev', 'yorigcsdev@gmail.com')
     .setExternalDoc('Github Repository', 'https://github.com/yorigcs/manga-reader-api')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('api/docs', app, document);
