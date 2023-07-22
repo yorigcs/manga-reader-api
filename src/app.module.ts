@@ -6,6 +6,7 @@ import config from './configuration/env.config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TagsModule } from './tags/tags.module';
+import { BooksModule } from './books/books.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TagsModule } from './tags/tags.module';
     UserModule,
     AuthModule,
     TagsModule,
+    BooksModule,
   ],
 })
 export class AppModule {}
