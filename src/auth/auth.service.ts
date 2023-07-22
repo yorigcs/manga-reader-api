@@ -32,7 +32,7 @@ export class AuthService {
     if (user === null) throw error;
     const isUserCredentialsValid = await this.hashService.compare({ plainText: password, cipherText: user.password });
     if (!isUserCredentialsValid) throw error;
-    const accessToken = await this.jwtService.generate<UserPayload>({ key: { id: user.id, username: user.username }, expirationInMs: 30 * 60 * 60 });
+    const accessToken = await this.jwtService.generate<UserPayload>({ key: { id: user.id, username: user.username }, expirationInMs: 8 * 60 * 60 * 1000 });
     return {
       user: {
         id: user.id,
