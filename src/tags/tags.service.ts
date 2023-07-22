@@ -11,7 +11,9 @@ export class TagsService {
     const { name } = createTagDto
     const tag = await this.tagsRepo.findOneBy({ name })
     if (tag !== null) throw new ConflictException('This tag name already exists!')
-    await this.tagsRepo.save({ name })
+    const newTag = new Tag()
+    newTag.name = createTagDto.name
+    await this.tagsRepo.save(newTag)
     return 'Tag created!'
   }
 

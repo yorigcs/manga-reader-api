@@ -20,14 +20,14 @@ export class BooksService {
     const folderName = title.split(' ').join('-')
     const extension = mimetype.split('/')[1]
     const bookImage = await this.s3.upload({ file: buffer, fileName: `${folderName}/cover.${extension}` })
-    await this.bookRepo.save({
-      title: createBookDto.title,
-      author: createBookDto.author,
-      synopsis: createBookDto.synopsis,
-      type: createBookDto.type,
-      image: bookImage,
-      postedBy: user.username
-    })
+    const newBook = new Book()
+    newBook.title = createBookDto.title
+    newBook.author = createBookDto.author
+    newBook.synopsis = createBookDto.synopsis
+    newBook.type = createBookDto.type
+    newBook.image = bookImage
+    newBook.postedBy = user.username
+    await this.bookRepo.save(newBook)
     return 'Book created with success'
   }
 }
