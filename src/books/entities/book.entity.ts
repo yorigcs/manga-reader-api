@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Chapter } from '../../chapters/entities/chapter.entity'
 
 export enum BookType {
   MANGA = 'manga',
@@ -43,4 +44,7 @@ export class Book {
 
   @UpdateDateColumn()
     updatedOn: Date
+
+  @OneToMany(() => Chapter, (chapter) => chapter.book)
+    chapters: Chapter[]
 }

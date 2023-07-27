@@ -7,7 +7,7 @@ import { UserModule } from './user/user.module'
 import { AuthModule } from './auth/auth.module'
 import { TagsModule } from './tags/tags.module'
 import { BooksModule } from './books/books.module'
-
+import { ChaptersModule } from './chapters/chapters.module'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
@@ -21,7 +21,8 @@ import { BooksModule } from './books/books.module'
     UserModule,
     AuthModule,
     TagsModule,
-    BooksModule
+    BooksModule,
+    ChaptersModule
   ]
 })
 export class AppModule {}
