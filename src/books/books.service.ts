@@ -5,11 +5,13 @@ import { type CreateBookDto } from './dto/create-book.dto'
 import { AWS_PROVIDES } from '../constants'
 import { AwsS3FileStorageService } from '../shared/storage/aws-s3-file-storage.service'
 import { Book } from './entities/book.entity'
+import { UuidService } from '../shared/uuid/uuid.service'
 
 @Injectable()
 export class BooksService {
   constructor (
     @Inject(AWS_PROVIDES.S3.BUCKET_MANGA_READER) private readonly s3: AwsS3FileStorageService,
+    private readonly uuidService: UuidService,
     @InjectRepository(Book) private readonly bookRepo: Repository<Book>
   ) {}
 
@@ -17,9 +19,8 @@ export class BooksService {
     const { file: { buffer, mimetype }, title, user } = createBookDto
     const book = await this.bookRepo.findOneBy({ title })
     if (book !== null) throw new ConflictException('This book already exists!')
-    const folderName = title.split(' ').join('-')
     const extension = mimetype.split('/')[1]
-    const bookImage = await this.s3.upload({ file: buffer, fileName: `${folderName}/cover.${extension}` })
+    const bookImage = await this.s3.upload({ file: buffer, fileName: `${this.uuidService.generate({ key: 'cover' })}.${extension}` })
     const newBook = new Book()
     newBook.title = createBookDto.title
     newBook.author = createBookDto.author
