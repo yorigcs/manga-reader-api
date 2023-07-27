@@ -16,6 +16,6 @@ export class AwsS3FileStorageService implements UploadFile {
 
   async upload ({ file, fileName }: UploadFile.Input): Promise<UploadFile.Output> {
     await this.s3.putObject({ Bucket: this.bucket, Key: fileName, Body: file, ACL: 'public-read' })
-    return `https://${this.bucket}.s3.amazonaws.com/${fileName}`
+    return `https://${this.bucket}.s3.amazonaws.com/${encodeURIComponent(fileName)}`
   }
 }
