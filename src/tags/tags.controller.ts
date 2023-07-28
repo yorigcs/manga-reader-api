@@ -4,7 +4,6 @@ import { TagsService } from './tags.service'
 import { CreateTagDto } from './dto/create-tag.dto'
 import { RolesGuard } from '../auth/roles.guard'
 import { AuthGuard } from '../auth/auth.guard'
-import { UserRole } from '../user/entities/user.entity'
 import { GetAllTagsResponse } from './swagger/tags.model'
 
 @ApiTags('Tags')
@@ -12,7 +11,7 @@ import { GetAllTagsResponse } from './swagger/tags.model'
 export class TagsController {
   constructor (private readonly tagsService: TagsService) {}
 
-  @UseGuards(AuthGuard, RolesGuard(UserRole.ADMIN))
+  @UseGuards(AuthGuard, RolesGuard('admin'))
   @Post()
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({ description: 'Invalid bearer token' })
@@ -20,12 +19,12 @@ export class TagsController {
   @ApiCreatedResponse({ description: 'Tag created!' })
   @ApiConflictResponse({ description: 'This tag already exists' })
   async create (@Body() createTagDto: CreateTagDto) {
-    return await this.tagsService.create(createTagDto)
+    return this.tagsService.create(createTagDto)
   }
 
   @Get()
   @ApiOkResponse({ description: 'List of all tags available.', type: GetAllTagsResponse, isArray: true })
   async findAll () {
-    return await this.tagsService.findAll()
+    return this.tagsService.findAll()
   }
 }

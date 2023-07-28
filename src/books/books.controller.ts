@@ -1,10 +1,20 @@
-import { Controller, Post, Body, UseGuards, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common'
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
+  Get
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiConflictResponse, ApiConsumes, ApiCreatedResponse, ApiForbiddenResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { BooksService } from './books.service'
 import { CreateBookDto } from './dto/create-book.dto'
 import { AuthGuard } from '../auth/auth.guard'
 import { RolesGuard } from '../auth/roles.guard'
-import { UserRole } from '../user/entities/user.entity'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { UserReq } from '../auth/user.decorator'
 import { UserPayload } from '../auth/auth.service'
@@ -15,7 +25,7 @@ import { CreateBookModel } from './swagger/books.model'
 export class BooksController {
   constructor (private readonly booksService: BooksService) {}
 
-  @UseGuards(AuthGuard, RolesGuard(UserRole.ADMIN))
+  @UseGuards(AuthGuard, RolesGuard('admin'))
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
@@ -38,5 +48,10 @@ export class BooksController {
     createBookDto.user = user
     createBookDto.file = file
     return await this.booksService.create(createBookDto)
+  }
+
+  @Get('/with-chapters')
+  async findBooksWithChapters () {
+    return this.booksService.findAllBooksWithNChapters()
   }
 }

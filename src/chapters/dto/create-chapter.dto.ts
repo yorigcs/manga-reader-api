@@ -1,13 +1,14 @@
-import { IsNotEmpty, IsNumberString } from 'class-validator'
+import { IsNotEmpty, IsNumberString, IsString } from 'class-validator'
 import { type UserPayload } from '../../auth/auth.service'
 
 export class CreateChapterDto {
   @IsNumberString()
     chapterNum: string
 
-  @IsNumberString()
+  @IsString()
     bookId: string
 
+  @IsString()
   @IsNotEmpty()
     chapterName: string
 

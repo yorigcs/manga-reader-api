@@ -14,7 +14,6 @@ import { ChaptersService } from './chapters.service'
 import { CreateChapterDto } from './dto/create-chapter.dto'
 import { AuthGuard } from '../auth/auth.guard'
 import { RolesGuard } from '../auth/roles.guard'
-import { UserRole } from '../user/entities/user.entity'
 import { FilesInterceptor } from '@nestjs/platform-express'
 import { UserReq } from '../auth/user.decorator'
 import { UserPayload } from '../auth/auth.service'
@@ -24,7 +23,7 @@ import { ParseFilesPipe } from '../shared/ParseFiesPipe'
 export class ChaptersController {
   constructor (private readonly chaptersService: ChaptersService) {}
 
-  @UseGuards(AuthGuard, RolesGuard(UserRole.ADMIN))
+  @UseGuards(AuthGuard, RolesGuard('admin'))
   @UseInterceptors(FilesInterceptor('files'))
   @Post()
   async create (@Body() createChapterDto: CreateChapterDto, @UserReq() user: UserPayload, @UploadedFiles(

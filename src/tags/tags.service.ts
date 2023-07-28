@@ -1,23 +1,22 @@
 import { ConflictException, Injectable } from '@nestjs/common'
 import { type CreateTagDto } from './dto/create-tag.dto'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Tag } from './entities/tag.entity'
-import { Repository } from 'typeorm'
+import { PrismaService } from '../prisma.service'
 
 @Injectable()
 export class TagsService {
-  constructor (@InjectRepository(Tag) private readonly tagsRepo: Repository<Tag>) {}
+  constructor (private readonly prisma: PrismaService) {
+  }
+
   async create (createTagDto: CreateTagDto) {
     const { name } = createTagDto
-    const tag = await this.tagsRepo.findOneBy({ name })
+    const tag = await this.prisma.tag.findUnique({ where: { name } })
     if (tag !== null) throw new ConflictException('This tag name already exists!')
-    const newTag = new Tag()
-    newTag.name = createTagDto.name
-    await this.tagsRepo.save(newTag)
+
+    await this.prisma.tag.create({ data: { name } })
     return 'Tag created!'
   }
 
   async findAll () {
-    return await this.tagsRepo.find()
+    return this.prisma.tag.findMany({ orderBy: { name: 'asc' } })
   }
 }

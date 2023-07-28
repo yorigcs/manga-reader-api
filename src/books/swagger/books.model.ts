@@ -1,6 +1,10 @@
-import { BookType } from '../entities/book.entity'
 import { ApiProperty } from '@nestjs/swagger'
 
+export enum BookType {
+  MANHUA = 'manhua',
+  MANHWA = 'manhwa',
+  MANGA = 'manga'
+}
 export class CreateBookModel {
   @ApiProperty()
     title: string
