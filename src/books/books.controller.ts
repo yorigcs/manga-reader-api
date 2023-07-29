@@ -8,7 +8,7 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
-  Get
+  Get, Query
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiBody, ApiConflictResponse, ApiConsumes, ApiCreatedResponse, ApiForbiddenResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { BooksService } from './books.service'
@@ -19,6 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import { UserReq } from '../auth/user.decorator'
 import { UserPayload } from '../auth/auth.service'
 import { CreateBookModel } from './swagger/books.model'
+import { SearchBooksDto } from './dto/search-books.dto'
 
 @ApiTags('Books')
 @Controller('books')
@@ -50,8 +51,8 @@ export class BooksController {
     return await this.booksService.create(createBookDto)
   }
 
-  @Get('/with-chapters')
-  async findBooksWithChapters () {
-    return this.booksService.findAllBooksWithNChapters()
+  @Get('/search')
+  async searchBooks (@Query() searchBooksDto: SearchBooksDto) {
+    return this.booksService.searchBooks(searchBooksDto)
   }
 }
