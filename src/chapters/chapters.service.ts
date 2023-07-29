@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common'
 import { type CreateChapterDto } from './dto/create-chapter.dto'
 import { AwsS3FileStorageService } from '../shared/storage/aws-s3-file-storage.service'
 import { AWS_PROVIDES } from '../constants'
@@ -18,7 +18,7 @@ export class ChaptersService {
     const hasBook = await this.prisma.book.findUnique({ where: { id: bookId } })
     if (hasBook === null) throw new NotFoundException("This book doesn't exists!")
     const hasChapter = await this.prisma.chapter.findFirst({ where: { AND: [{ bookId }, { chapterNum: parseInt(chapterNum) }] } })
-    if (hasChapter !== null) throw new NotFoundException('This chapter already exists for this book!')
+    if (hasChapter !== null) throw new ConflictException('This chapter already exists for this book!')
     const pageImages: string[] = []
     for (const file of files) {
       const extension = file.mimetype.split('/')[1]
